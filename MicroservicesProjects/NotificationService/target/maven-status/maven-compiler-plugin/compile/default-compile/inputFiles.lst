@@ -1,0 +1,5 @@
+/home/pawel/IntelliJ Projects/NotificationService/src/main/java/com/pbs/edu/NotificationService/NotificationServiceApplication.java
+/home/pawel/IntelliJ Projects/NotificationService/src/main/java/com/pbs/edu/NotificationService/controller/NotificationController.java
+/home/pawel/IntelliJ Projects/NotificationService/src/main/java/com/pbs/edu/NotificationService/model/Notification.java
+/home/pawel/IntelliJ Projects/NotificationService/src/main/java/com/pbs/edu/NotificationService/repository/NotificationRepository.java
+/home/pawel/IntelliJ Projects/NotificationService/src/main/java/com/pbs/edu/NotificationService/service/EmailService.java

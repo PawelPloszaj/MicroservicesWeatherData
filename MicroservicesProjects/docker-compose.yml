@@ -1,0 +1,51 @@
+services:
+  weather-db:
+    image: mysql:5.7
+    container_name: weather-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: weather
+      MYSQL_USER: weatheruser
+      MYSQL_PASSWORD: p@ssw0rd
+    ports:
+      - "3306:3306"
+    volumes:
+      - weather-db-data:/var/lib/mysql
+
+  weather-service:
+    build:
+      context: ./WeatherDataService
+      dockerfile: Dockerfile
+    container_name: weather-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://weather-db:3306/weather
+      SPRING_DATASOURCE_USERNAME: weatheruser
+      SPRING_DATASOURCE_PASSWORD: p@ssw0rd
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    depends_on:
+      - weather-db
+
+  notification-service:
+    build:
+      context: ./NotificationService
+      dockerfile: Dockerfile
+    container_name: notification-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://weather-db:3306/weather
+      SPRING_DATASOURCE_USERNAME: weatheruser
+      SPRING_DATASOURCE_PASSWORD: p@ssw0rd
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_MAIL_HOST: smtp.mailtrap.io
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: 31aafe68f86106
+      SPRING_MAIL_PASSWORD: 230bdd9bdf3ef2
+    ports:
+      - "8081:8080"
+    depends_on:
+      - weather-db
+
+volumes:
+  weather-db-data:
