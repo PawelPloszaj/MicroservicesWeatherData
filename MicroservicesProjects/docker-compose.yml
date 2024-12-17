@@ -47,5 +47,22 @@ services:
     depends_on:
       - weather-db
 
+  user-service:
+    build:
+      context: ./UserService
+      dockerfile: Dockerfile
+    container_name: user-service
+    environment:
+      SPRING_SECURITY_USER_NAME: admin
+      SPRING_SECURITY_USER_PASSWORD: p@ssw0rd
+      SPRING_DATASOURCE_URL: jdbc:mysql://weather-db:3306/weather
+      SPRING_DATASOURCE_USERNAME: weatheruser
+      SPRING_DATASOURCE_PASSWORD: p@ssw0rd
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8082:8080"
+    depends_on:
+      - weather-db
+
 volumes:
   weather-db-data:
