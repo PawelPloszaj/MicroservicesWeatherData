@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Historical Weather Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link th:href="@{/motyw.css}" rel="stylesheet">
+</head>
+<body>
+<nav>
+    <ul class="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/weather">Current Weather</a></li>
+        <li><a href="/history">Historical Weather</a></li>
+        <li><a href="/settings">Settings</a></li>
+        <li><a href="/notifications">Notifications</a></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li th:if="${user != null}"><p th:text="${user.email}"></p></li>
+        <li th:if="${user != null}"><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
+<br>
+<h1>Historical Weather Data</h1>
+
+<form method="get" action="/history">
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" required>
+    <label for="country">Country:</label>
+    <input type="text" id="country" name="country" required>
+    <button type="submit">Submit</button>
+</form>
+
+<h2>Historical Data for city: <span style="color: #00FFFF;" th:text="${cityName}"></span></h2>
+<ul class="wthrData">
+    <li th:each="data : ${historicalWeather}">
+        <span th:text="${#temporals.format(data.date, 'yyyy-MM-dd HH:mm:ss')}"></span> -
+        Temperature: <span th:text="${data.temp}"></span> °C,
+        Feels Like: <span th:text="${data.feelsLike}"></span> °C,
+        Pressure: <span th:text="${data.pressure}"></span> hPa,
+        Wind Speed: <span th:text="${data.windSpeed}"></span> m/s,
+        Humidity: <span th:text="${data.humidity}"></span>%
+    </li>
+</ul>
+<br>
+<br>
+<!-- Sekcja wykresów -->
+<div>
+    <h2 for="chartSelect">Select a chart:</h2>
+    <select id="chartSelect">
+        <option value="temperature">Temperature Chart</option>
+        <option value="feelsLike">Feels Like Temperature Chart</option>
+        <option value="pressure">Pressure Chart</option>
+        <option value="wind">Wind Speed Chart</option>
+        <option value="humidity">Humidity Chart</option>
+    </select>
+</div>
+
+<br>
+<h2 id="temperatureLabel" style="text-align: center; display: block;">Temperature Chart</h2>
+<canvas id="temperatureChart" width="400" height="200" style="display: block;"></canvas>
+
+<h2 id="feelsLikeLabel" style="text-align: center; display: none;">Feels Like Temperature Chart</h2>
+<canvas id="feelsLikeChart" width="400" height="200" style="display: none;"></canvas>
+
+<h2 id="pressureLabel" style="text-align: center; display: none;">Pressure Chart</h2>
+<canvas id="pressureChart" width="400" height="200" style="display: none;"></canvas>
+
+<h2 id="windLabel" style="text-align: center; display: none;">Wind Speed Chart</h2>
+<canvas id="windChart" width="400" height="200" style="display: none;"></canvas>
+
+<h2 id="humidityLabel" style="text-align: center; display: none;">Humidity Chart</h2>
+<canvas id="humidityChart" width="400" height="200" style="display: none;"></canvas>
+
+
+<script th:inline="javascript">
+    const historicalWeather = /*[[${historicalWeather}]]*/ [];
+
+    // Dane do wykresów
+    const labels = historicalWeather.map(data => new Date(data.date).toLocaleString());
+    const temperatures = historicalWeather.map(data => data.temp);
+    const feelsLikeTemps = historicalWeather.map(data => data.feelsLike);
+    const pressures = historicalWeather.map(data => data.pressure);
+    const windSpeeds = historicalWeather.map(data => data.windSpeed);
+    const humidities = historicalWeather.map(data => data.humidity);
+
+
+   const ctxTemperature = document.getElementById('temperatureChart').getContext('2d');
+    new Chart(ctxTemperature, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Temperature (°C)',
+            data: temperatures,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderWidth: 1,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top'
+            },
+            tooltip: {
+                mode: 'nearest',
+                intersect: false
+            }
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Date & Time'
+                },
+                ticks: {
+                    display: false
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Temperature (°C)'
+                }
+            }
+        }
+    }
+});
+
+const ctxFeelsLike = document.getElementById('feelsLikeChart').getContext('2d');
+new Chart(ctxFeelsLike, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Feels Like Temperature (°C)',
+            data: feelsLikeTemps,
+            borderColor: 'rgba(255, 159, 64, 1)',
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            borderWidth: 1,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top'
+            },
+            tooltip: {
+                mode: 'nearest',
+                intersect: false
+            }
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Date & Time'
+                },
+                ticks: {
+                    display: false
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Feels Like Temperature (°C)'
+                }
+            }
+        }
+    }
+});
+
+const ctxPressure = document.getElementById('pressureChart').getContext('2d');
+new Chart(ctxPressure, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Pressure (hPa)',
+            data: pressures,
+            borderColor: 'rgba(153, 102, 255, 1)',
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderWidth: 1,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top'
+            },
+            tooltip: {
+                mode: 'nearest',
+                intersect: false
+            }
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Date & Time'
+                },
+                ticks: {
+                    display: false
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Pressure (hPa)'
+                }
+            }
+        }
+    }
+});
+
+const ctxWind = document.getElementById('windChart').getContext('2d');
+new Chart(ctxWind, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Wind Speed (m/s)',
+            data: windSpeeds,
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderWidth: 1,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top'
+            },
+            tooltip: {
+                mode: 'nearest',
+                intersect: false
+            }
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Date & Time'
+                },
+                ticks: {
+                    display: false
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Wind Speed (m/s)'
+                }
+            }
+        }
+    }
+});
+
+const ctxHumidity = document.getElementById('humidityChart').getContext('2d');
+new Chart(ctxHumidity, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Humidity (%)',
+            data: humidities,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderWidth: 1,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top'
+            },
+            tooltip: {
+                mode: 'nearest',
+                intersect: false
+            }
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Date & Time'
+                },
+                ticks: {
+                    display: false
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Humidity (%)'
+                }
+            }
+        }
+    }
+});
+
+     document.getElementById('chartSelect').addEventListener('change', function() {
+        const selectedChart = this.value;
+
+        // Hide all charts
+        document.getElementById('temperatureChart').style.display = 'none';
+        document.getElementById('feelsLikeChart').style.display = 'none';
+        document.getElementById('pressureChart').style.display = 'none';
+        document.getElementById('windChart').style.display = 'none';
+        document.getElementById('humidityChart').style.display = 'none';
+
+        // Hide all labels
+        document.getElementById('temperatureLabel').style.display = 'none';
+        document.getElementById('feelsLikeLabel').style.display = 'none';
+        document.getElementById('pressureLabel').style.display = 'none';
+        document.getElementById('windLabel').style.display = 'none';
+        document.getElementById('humidityLabel').style.display = 'none';
+
+        // Show selected chart & label
+        if (selectedChart === 'temperature') {
+            document.getElementById('temperatureChart').style.display = 'block';
+            document.getElementById('temperatureLabel').style.display = 'block';
+        } else if (selectedChart === 'feelsLike') {
+            document.getElementById('feelsLikeChart').style.display = 'block';
+            document.getElementById('feelsLikeLabel').style.display = 'block';
+        } else if (selectedChart === 'pressure') {
+            document.getElementById('pressureChart').style.display = 'block';
+            document.getElementById('pressureLabel').style.display = 'block';
+        } else if (selectedChart === 'wind') {
+            document.getElementById('windChart').style.display = 'block';
+            document.getElementById('windLabel').style.display = 'block';
+        } else if (selectedChart === 'humidity') {
+            document.getElementById('humidityChart').style.display = 'block';
+            document.getElementById('humidityLabel').style.display = 'block';
+        }
+    });
+</script>
+</body>
+</html>

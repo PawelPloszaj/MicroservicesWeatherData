@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -139,4 +139,7 @@ public class WeatherData {
     public static class Clouds {
         public int all;
     }
+
+    private LocalDateTime date;
+
 }

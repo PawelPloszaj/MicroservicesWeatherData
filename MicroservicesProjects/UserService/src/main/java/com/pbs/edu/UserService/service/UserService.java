@@ -20,8 +20,22 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public boolean checkPass(String passwordGiven, String passwordExpected) {
+        return passwordEncoder.matches(passwordGiven, passwordExpected);
+    }
+
     public User addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
+
 }

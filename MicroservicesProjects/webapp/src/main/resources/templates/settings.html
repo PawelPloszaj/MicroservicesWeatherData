@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Settings</title>
+    <link th:href="@{/motyw.css}" rel="stylesheet">
+</head>
+<body>
+<nav>
+    <ul class="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/weather">Current Weather</a></li>
+        <li><a href="/history">Historical Weather</a></li>
+        <li><a href="/settings">Settings</a></li>
+        <li><a href="/notifications">Notifications</a></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li th:if="${user != null}"><p th:text="${user.email}"></p></li>
+        <li th:if="${user != null}"><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
+<br>
+<h1>User Settings</h1>
+<form action="/settings" method="post">
+    <input type="hidden" name="id" th:value="${user.id}">
+    <input type="hidden" name="email" th:value="${user.email}" readonly><br>
+    City: <input type="text" name="city" th:value="${user.city}"><br>
+    Country: <input type="text" name="country" th:value="${user.country}"><br>
+    Notifications: <br>
+    <input type="checkbox" name="rainNotification" th:checked="${user.rainNotification}"> Rain<br>
+    <input type="checkbox" name="snowNotification" th:checked="${user.snowNotification}"> Snow<br>
+    <input type="checkbox" name="windNotification" th:checked="${user.windNotification}"> Wind<br>
+    <input type="checkbox" name="highTempNotification" th:checked="${user.highTempNotification}"> High Temperature<br>
+    <input type="checkbox" name="lowTempNotification" th:checked="${user.lowTempNotification}"> Low Temperature<br>
+    <br>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+    <link th:href="@{/motyw.css}" rel="stylesheet">
+</head>
+<body>
+<nav>
+    <ul class="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/weather">Current Weather</a></li>
+        <li><a href="/history">Historical Weather</a></li>
+        <li><a href="/settings">Settings</a></li>
+        <li><a href="/notifications">Notifications</a></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li><a href="/login">Login</a></li>
+    </ul>
+</nav>
+<br>
+<h1>Register</h1>
+<form action="/register" method="post">
+    Email: <input type="email" name="email" required><br>
+    Password: <input type="password" name="password" required><br>
+    Country: <input type="text" name="country" required><br>
+    City: <input type="text" name="city" required><br>
+    <br>
+    <button type="submit">Register</button>
+</form>
+</body>
+</html>

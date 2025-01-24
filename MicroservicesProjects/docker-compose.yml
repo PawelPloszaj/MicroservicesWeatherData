@@ -64,5 +64,24 @@ services:
     depends_on:
       - weather-db
 
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    container_name: webapp
+    ports:
+      - "8083:8083"
+    environment:
+      WEATHER_SERVICE_URL: http://weather-service:8080
+      NOTIFICATION_SERVICE_URL: http://notification-service:8080
+      USER_SERVICE_URL: http://user-service:8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://weather-db:3306/weather
+      SPRING_DATASOURCE_USERNAME: weatheruser
+      SPRING_DATASOURCE_PASSWORD: p@ssw0rd
+    depends_on:
+      - weather-service
+      - user-service
+      - notification-service
+
 volumes:
   weather-db-data:

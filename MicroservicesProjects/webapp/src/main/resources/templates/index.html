@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home Page</title>
+    <link th:href="@{/motyw.css}" rel="stylesheet">
+</head>
+<body>
+<header>
+    <!--<h1>Welcome to Weather Application!</h1>-->
+</header>
+<nav>
+    <ul class="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/weather">Current Weather</a></li>
+        <li><a href="/history">Historical Weather</a></li>
+        <li><a href="/settings">Settings</a></li>
+        <li><a href="/notifications">Notifications</a></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li th:if="${user == null}"><a href="/register">Register</a></li>
+        <li th:if="${user == null}"><a href="/login">Login</a></li>
+        <li th:if="${user != null}"><p th:text="${user.email}"></p></li>
+        <li th:if="${user != null}"><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
+<br>
+<h1>Welcome to Weather Application!</h1>
+</body>
+</html>

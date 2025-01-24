@@ -1,0 +1,191 @@
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #121212;
+    color: #FFFFFF;
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+}
+
+h1 {
+    color: #FFFFFF;
+    margin-bottom: 10px;
+    text-align: center;
+}
+h2, h3 {
+    color: #FFFFFF;
+    margin-bottom: 10px;
+}
+
+nav {
+    background-color: #1e1e1e;
+    padding: 10px;
+}
+
+.nav-menu {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+}
+
+.nav-menu li {
+    margin: 0 15px;
+}
+
+.nav-menu p {
+    padding: 10px;
+    display: block;
+    font-weight: bold;
+    color: #00FFFF;
+}
+
+.nav-menu a {
+    color: #f1f1f1;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+}
+
+.nav-menu a:hover {
+    background-color: #575757;
+    color: white;
+}
+
+form {
+    background-color: #1E1E1E;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #FFFFFF;
+}
+
+input[type="text"], input[type="password"], input[type="email"], select, button {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    background-color: #2D2D2D;
+    color: #FFFFFF;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #87CEFA;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ADD8E6;
+}
+
+.wthrData ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.wthrData {
+    background-color: #1e1e1e;
+    padding: 10px 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-height: 500px;
+    overflow-y: auto;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-bottom: 8px;
+}
+
+.wthrData li {
+    background-color: #1e1e1e;
+    padding: 10px 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.wthrData li:hover {
+    background-color: #575757;
+    color: white;
+    transform: translateY(-2px);
+}
+
+select {
+    background-color: #1E1E1E;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+
+/* Wykresy */
+canvas {
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: #FFFFFF;
+}
+
+h2.chart-title {
+    color: #FFFFFF;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.chartjs-tooltip {
+    background-color: #333333;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.chartjs-legend {
+    background-color: #2D2D2D;
+    color: #FFFFFF;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#openweathermap-widget-21 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#errorDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}

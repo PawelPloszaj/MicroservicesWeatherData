@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Notifications</title>
+    <link th:href="@{/motyw.css}" rel="stylesheet">
+</head>
+<body>
+<nav>
+    <ul class="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/weather">Current Weather</a></li>
+        <li><a href="/history">Historical Weather</a></li>
+        <li><a href="/settings">Settings</a></li>
+        <li><a href="/notifications">Notifications</a></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li th:if="${user != null}"><p th:text="${user.email}"></p></li>
+        <li th:if="${user != null}"><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
+<br>
+<h1>Your Notifications</h1>
+
+<ul class="wthrData">
+    <li th:each="notification : ${notifications}">
+        <p>
+            <strong>Email:</strong> <span th:text="${notification.email}"></span><br>
+            <strong>Subject:</strong> <span th:text="${notification.subject}"></span><br>
+            <strong>Message:</strong> <span th:text="${notification.message}"></span><br>
+            <strong>Time:</strong> <span th:text="${notification.timestamp}"></span><br>
+            <strong>Sent:</strong> <span th:text="${notification.sent}"></span><br>
+        </p>
+    </li>
+</ul>
+</body>
+</html>

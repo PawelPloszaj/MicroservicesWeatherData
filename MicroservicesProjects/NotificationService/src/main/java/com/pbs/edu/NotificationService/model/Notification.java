@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 public class Notification {
@@ -17,5 +19,6 @@ public class Notification {
     private String email;
     private String subject;
     private String message;
+    private LocalDateTime timestamp;
     private boolean sent;
 }

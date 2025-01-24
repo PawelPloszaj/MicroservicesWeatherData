@@ -29,4 +29,9 @@ public class NotificationController {
     public List<Notification> getAllNotifications() {
         return repository.findAll();
     }
+
+    @GetMapping("/by-email")
+    public List<Notification> getNotificationsByEmail(@RequestParam("email") String email) {
+        return repository.findByEmail(email);
+    }
 }

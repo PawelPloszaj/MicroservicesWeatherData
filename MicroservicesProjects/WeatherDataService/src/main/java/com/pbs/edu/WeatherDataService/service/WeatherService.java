@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class WeatherService {
 
@@ -28,14 +31,19 @@ public class WeatherService {
         if(weatherData != null) {
             weatherData.setCityName(city);
             weatherData.setCountry(countryCode);
+            weatherData.setDate(LocalDateTime.now());
             weatherDataRepository.save(weatherData);
         }
 
         return weatherData;
     }
 
-    public Iterable<WeatherData> getWeatherHistory() {
+     public List<WeatherData> getWeatherHistory() {
         return weatherDataRepository.findAll();
+    }
+
+    public List<WeatherData> getWeatherHistory(String city, String country) {
+        return weatherDataRepository.findByCityNameAndCountry(city, country);
     }
 }
 

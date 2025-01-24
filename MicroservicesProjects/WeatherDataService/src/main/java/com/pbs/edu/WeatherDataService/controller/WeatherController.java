@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class WeatherController {
     @Autowired
@@ -18,8 +20,15 @@ public class WeatherController {
     }
 
     @GetMapping("/weather/history")
-    public Iterable<WeatherData> getWeatherHistory() {
-        return weatherService.getWeatherHistory();
+    public List<WeatherData> getWeatherHistory(
+            @RequestParam(name = "city", required = false) String city,
+            @RequestParam(name = "country", required = false) String country
+    ) {
+        if (city != null && country != null) {
+            return weatherService.getWeatherHistory(city, country);
+        } else {
+            return weatherService.getWeatherHistory();
+        }
     }
 }
 

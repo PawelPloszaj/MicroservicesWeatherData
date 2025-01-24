@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Current Weather</title>
+    <link th:href="@{/motyw.css}" rel="stylesheet">
+</head>
+<body>
+<nav>
+    <ul class="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/weather">Current Weather</a></li>
+        <li><a href="/history">Historical Weather</a></li>
+        <li><a href="/settings">Settings</a></li>
+        <li><a href="/notifications">Notifications</a></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li th:if="${user != null}"><p th:text="${user.email}"></p></li>
+        <li th:if="${user != null}"><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
+<br>
+<h1>Weather Data</h1>
+
+<!-- Formularz do sprawdzenia pogody dla wybranego miasta -->
+<form method="get" action="/weather">
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" required>
+    <label for="country">Country:</label>
+    <input type="text" id="country" name="country" required>
+    <button type="submit">Submit</button>
+</form>
+
+<h2>Current Weather Data</h2>
+<div th:if="${currentWeather != null}">
+    <h3>Weather for your city: <span style="color: #00FFFF;" th:text="${cityName}"></span></h3>
+    <p>Temperature: <span th:text="${currentWeather.temp}"></span> °C</p>
+    <p>Feels Like: <span th:text="${currentWeather.feelsLike}"></span> °C</p>
+    <p>Min Temperature: <span th:text="${currentWeather.tempMin}"></span> °C</p>
+    <p>Max Temperature: <span th:text="${currentWeather.tempMax}"></span> °C</p>
+    <p>Pressure: <span th:text="${currentWeather.pressure}"></span> hPa</p>
+    <p>Humidity: <span th:text="${currentWeather.humidity}"></span>%</p>
+    <p>Wind Speed: <span th:text="${currentWeather.windSpeed}"></span> m/s</p>
+    <p>Wind Direction: <span th:text="${currentWeather.windDeg}"></span>°</p>
+    <p>Cloudiness: <span th:text="${currentWeather.clouds}"></span>%</p>
+    <p>Visibility: <span th:text="${currentWeather.visibility}"></span> m</p>
+</div>
+
+<div id="openweathermap-widget-21"></div>
+<script src="//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js"></script>
+<script th:inline="javascript">
+    const apiKey = '353dc6ca3e2e48a7296714f30d5f88c4';
+
+    // Dane dynamiczne: nazwa miasta, kraj lub współrzędne
+    const cityName = /*[[${cityName}]]*/;
+    const countryCode = /*[[${currentWeather.country}]]*/;
+
+    // Funkcja pobierająca City ID z OpenWeatherMap API
+    async function fetchCityId(cityName, countryCode) {
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryCode}&appid=${apiKey}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.id;
+    }
+
+    // Dodanie widgetu do strony
+    async function loadWeatherWidget() {
+        const cityId = await fetchCityId(cityName, countryCode);
+
+        // Parametry widgetu
+        window.myWidgetParam = window.myWidgetParam || [];
+        window.myWidgetParam.push({
+            id: 21,
+            cityid: cityId,
+            appid: apiKey,
+            units: 'metric',
+            containerid: 'openweathermap-widget-21',
+        });
+
+        // Ładowanie skryptu widgetu
+        const script = document.createElement('script');
+        script.async = true;
+        script.charset = 'utf-8';
+        script.src = '//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js';
+        document.getElementsByTagName('head')[0].appendChild(script);
+    }
+
+    // Inicjalizacja
+    loadWeatherWidget();
+</script>
+</body>
+</html>
